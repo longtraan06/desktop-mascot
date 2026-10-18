@@ -69,7 +69,7 @@ function zoneOf(el: HTMLElement | null, open: boolean) {
 function panelSize(host: HTMLElement | null, fallback: { w: number; h: number }) {
   const child = host?.firstElementChild as HTMLElement | null
   if (!child || child.offsetWidth < 2 || child.offsetHeight < 2) return fallback
-  return { w: child.offsetWidth, h: child.offsetHeight }
+  return { w: Math.max(child.offsetWidth, fallback.w), h: Math.max(child.offsetHeight, fallback.h) }
 }
 
 async function pushProfile() {
@@ -121,8 +121,9 @@ async function scenePoint() {
     : inner.y + innerSize.height - (16 + mascot.size.value / 2) * scale
   const monitors = await availableMonitors()
   const hit = monitors.find((m) => x >= m.position.x && y >= m.position.y && x < m.position.x + m.size.width && y < m.position.y + m.size.height) ?? monitors[0]
-  const monitor: Rect = hit
-    ? { x: hit.position.x, y: hit.position.y, w: hit.size.width, h: hit.size.height }
+  const area = hit?.workArea
+  const monitor: Rect = area
+    ? { x: area.position.x, y: area.position.y, w: area.size.width, h: area.size.height }
     : { x: 0, y: 0, w: 1920, h: 1080 }
   return { x, y, scale, monitor }
 }
@@ -133,7 +134,7 @@ async function fitScene(follow = true) {
   try {
     await nextTick()
     const spot = await scenePoint()
-    const hub = mascot.isHubOpen.value ? panelSize(hubHost.value, { w: 336, h: 380 }) : { w: 0, h: 0 }
+    const hub = mascot.isHubOpen.value ? panelSize(hubHost.value, { w: 336, h: 480 }) : { w: 0, h: 0 }
     const bubble = mascot.isBubbleVisible.value ? panelSize(bubbleHost.value, { w: 220, h: 72 }) : { w: 0, h: 0 }
     const frame = layoutFrame({
       botX: spot.x,

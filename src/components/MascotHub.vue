@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
   >
     <div
       v-if="mascot.isHubOpen.value"
-      class="w-84 max-w-[90vw] rounded-2xl bg-neutral-900/95 text-neutral-100 shadow-2xl backdrop-blur-xl border border-white/15 flex flex-col overflow-hidden pointer-events-auto select-none"
+      class="w-84 rounded-2xl bg-neutral-900/95 text-neutral-100 shadow-2xl backdrop-blur-xl border border-white/15 flex flex-col overflow-hidden pointer-events-auto select-none"
     >
       <!-- Header -->
       <div class="px-4 py-2.5 bg-white/5 border-b border-white/10 flex items-center justify-between">
